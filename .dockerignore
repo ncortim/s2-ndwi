@@ -1,0 +1,9 @@
+./ioDir/
+./Dockerfile
+./workDir/
+./README.md
+./docker-compose.yml
+./.gitignore
+./.dockerignore
+./.git
+./.venv
