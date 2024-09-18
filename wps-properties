@@ -1,0 +1,3 @@
+S2_INPUT=/home/worker/ioDir/S2B_MSIL2A_20240813T101559_N0511_R065_T32UPU_20240813T133715.SAFE
+NDWI_OUTPUT=/home/worker/workDir/outDir/ndwi_output
+
