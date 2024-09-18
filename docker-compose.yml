@@ -1,0 +1,11 @@
+services:
+  s2ndwi:
+    container_name: s2ndwi
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+    #   # adapt local path to the respective directories according to 
+    #   # development environment
+      - /home/.../ioDir:/home/worker/ioDir
+      - /home/.../workDir:/home/worker/workDir/
