@@ -47,7 +47,7 @@ def read_band(
     return band_array, transform, projection
 
 
-def compute_ndvi(green_band: np.ndarray, nir_band: np.ndarray) -> np.ndarray:
+def compute_ndwi(green_band: np.ndarray, nir_band: np.ndarray) -> np.ndarray:
     """
     Compute the NDWI from Green and NIR bands.
 
@@ -64,7 +64,7 @@ def compute_ndvi(green_band: np.ndarray, nir_band: np.ndarray) -> np.ndarray:
 
 
 def write_cog(
-    ndvi: np.ndarray,
+    ndwi: np.ndarray,
     transform: Tuple[float, float, float, float, float, float],
     projection: str,
     output_cog_path: str,
@@ -73,7 +73,7 @@ def write_cog(
     Write the NDWI array to a Cloud Optimized GeoTIFF (COG).
 
     Args:
-        ndvi (numpy array): Array of NDWI values.
+        ndwi (numpy array): Array of NDWI values.
         transform (tuple): Geotransform of the raster.
         projection (str): Projection of the raster.
         output_cog_path (str): Path where the COG will be saved.
@@ -82,7 +82,7 @@ def write_cog(
     if driver is None:
         raise RuntimeError("GDAL driver for GTiff not found")
 
-    rows, cols = ndvi.shape
+    rows, cols = ndwi.shape
     options = ["TILED=YES", "COMPRESS=LZW", "BLOCKXSIZE=512", "BLOCKYSIZE=512"]
 
     # Create a new dataset
@@ -92,9 +92,9 @@ def write_cog(
     output_ds.SetGeoTransform(transform)
     output_ds.SetProjection(projection)
 
-    # Write the NDVI array
+    # Write the NDWI array
     output_band = output_ds.GetRasterBand(1)
-    output_band.WriteArray(ndvi)
+    output_band.WriteArray(ndwi)
     output_band.SetDescription("NDWI")
     output_band.SetNoDataValue(-9999)
 
@@ -102,7 +102,7 @@ def write_cog(
     output_ds.FlushCache()
     output_ds = None  # Close the dataset
 
-    print(f"NDVI calculation complete. COG saved to {output_cog_path}")
+    print(f"NDWI calculation complete. COG saved to {output_cog_path}")
 
 
 @click.command()
@@ -120,7 +120,7 @@ def main(path_to_s2_folder: str, output_cog_path: str, new_basename: str):
         output_cog_path (str): Path where the COG will be saved. Do not
             use a trailing slash (e.g. /path/to/dir)
         new_basename (str): String containing the name of the new calculated
-            ndvi
+            ndwi
     """
 
     # path_to_s2_folder = (kwargs["path_to_s2_folder"],)
@@ -136,7 +136,7 @@ def main(path_to_s2_folder: str, output_cog_path: str, new_basename: str):
     green_band, transform, projection = read_band(green_band_path)
     nir_band, _, _ = read_band(nir_band_path)
 
-    ndwi = compute_ndvi(green_band, nir_band)
+    ndwi = compute_ndwi(green_band, nir_band)
 
     write_cog(ndwi, transform, projection, output_cog_path)
 
