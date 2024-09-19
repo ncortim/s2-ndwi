@@ -13,9 +13,9 @@ stored in a directory with the extension .SAFE, specifically targeting the
 and near-infrared (B08) bands within a specified Sentinel-2 SAFE directory.
 
 - **NDWI Calculation:** Computes NDWI using the formula:
-  \[
-  \text{NDWI} = \frac{\text{Green} - \text{NIR}}{\text{Green} + \text{NIR}}
-  \]
+
+  NDWI = (Green - NIR) \ (Green + NIR)
+  
 - **Cloud Optimized GeoTIFF (COG) Output:** Saves the NDWI result as a Cloud 
 Optimized GeoTIFF with efficient tiling and compression for better performance
 in cloud environments.
